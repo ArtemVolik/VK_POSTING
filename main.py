@@ -75,7 +75,7 @@ if __name__ == '__main__':
     params = {
         'group_id': os.getenv('GROUP_ID'),
         'access_token': os.getenv('ACCESS_TOKEN'),
-        'v': 5.126
+        'v': os.getenv('API_VERSION')
     }
 
     proxies = {
