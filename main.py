@@ -62,11 +62,9 @@ def post_picture_on_the_wall(saved_picture_data, params=None, proxies=None):
     post_params['from_group'] = 1
     post_params['message'] = 'test'
     post_params['attachments'] = f'photo{owner_id}_{photo_id}'
-    print(post_params)
     url = 'https://api.vk.com/method/wall.post'
     response = requests.post(url, params=post_params, proxies=proxies)
     response.raise_for_status()
-    print(response.json())
 
 
 if __name__ == '__main__':
@@ -90,6 +88,7 @@ if __name__ == '__main__':
     saved_picture_data = save_picture_for_the_wall(posted_picture_data, params, proxies)
     post_picture_on_the_wall(saved_picture_data, params, proxies)
     os.remove(file_name)
+    print('Комикс успешно размещен')
 
 
 
