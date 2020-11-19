@@ -1,22 +1,8 @@
 import requests
-from pprint import pprint
 import os
 from dotenv import load_dotenv
 import random
 from pathvalidate import sanitize_filename
-
-load_dotenv()
-
-params = {
-    'group_id': os.getenv('group_id'),
-    'access_token': os.getenv('access_token'),
-    'v': 5.126
-}
-
-proxies = {
-    'http': os.getenv('PROXY_HTTP'),
-    'https': os.getenv('PROXY_HTTPS')
-}
 
 
 def get_response(url, params=None, proxies=None):
@@ -83,16 +69,25 @@ def post_picture_on_the_wall(saved_picture_data, params=None, proxies=None):
     print(response.json())
 
 
-
-
 if __name__ == '__main__':
+    load_dotenv()
+
+    params = {
+        'group_id': os.getenv('GROUP_ID'),
+        'access_token': os.getenv('ACCESS_TOKEN'),
+        'v': 5.126
+    }
+
+    proxies = {
+        'http': os.getenv('PROXY_HTTP'),
+        'https': os.getenv('PROXY_HTTPS')
+    }
     comics_id = get_random_comics()
     comics = fetch_comics(comics_id)
     file_name = save_picture(comics)
     upload_url = get_upload_url(params, proxies)
     posted_picture_data = post_picture(upload_url, file_name, params, proxies)
     saved_picture_data = save_picture_for_the_wall(posted_picture_data, params, proxies)
-    pprint(saved_picture_data)
     post_picture_on_the_wall(saved_picture_data, params, proxies)
     os.remove(file_name)
 
