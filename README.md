@@ -21,7 +21,7 @@ PROXY_HTTPS='https://<proxy_login>:<proxy_password>@<ip>:<port>'
 
 - создать страницу группы или найти id имеющейся и добавить в `.env`
 ```
-GROUP_ID='your_id'
+VK_GROUP_ID='your_id'
 ```
 - создать `standalone` приложение ([vk для девелоперов](https://vk.com/dev))
 Оно далее  используется только для создания ключа доступа.
@@ -29,11 +29,11 @@ GROUP_ID='your_id'
 имени даете разрешение приложению на действия. Вам потребуется ключ с правами:`photos, groups, wall, offline`.
 Из полученной ссылки скопируйте ваш access токен и поместите в `.env`
 ```
-ACCESS_TOKEN='your_token'
+VK_ACCESS_TOKEN='your_token'
 ```
 - и последнее добавить в .env версию API в контакте:
 ```
-API_VERSION=5.126
+VK_API_VERSION=5.126
 ```
 
 ## Использование
