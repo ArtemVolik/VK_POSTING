@@ -71,9 +71,9 @@ if __name__ == '__main__':
     load_dotenv()
 
     params = {
-        'group_id': os.getenv('GROUP_ID'),
-        'access_token': os.getenv('ACCESS_TOKEN'),
-        'v': os.getenv('API_VERSION')
+        'group_id': os.getenv('VK_GROUP_ID'),
+        'access_token': os.getenv('VK_ACCESS_TOKEN'),
+        'v': os.getenv('VK_API_VERSION')
     }
 
     proxies = {
