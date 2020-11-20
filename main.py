@@ -21,12 +21,11 @@ def fetch_comics(comics_id):
     comics = get_response(f'https://xkcd.com/{comics_id}/info.0.json')
     return {'image_link': comics['img'], 'image_title': comics['safe_title'], 'image_alt': comics['alt']}
 
-def save_picture(comics):
-    file_name = sanitize_filename(f"{comics['image_title']}{os.path.splitext(comics['image_link'])[1]}")
+
+def save_picture(comics, file_name ):
     with open(file_name, 'wb') as file:
             response = requests.get(comics['image_link'])
             file.write(response.content)
-    return file_name
 
 
 def get_upload_url(params, proxies):
@@ -54,9 +53,10 @@ def save_picture_for_the_wall(posted_picture_data, params=None, proxies=None):
     return response.json()
 
 
-def post_picture_on_the_wall(saved_picture_data, params=None, proxies=None):
-    photo_id = saved_picture_data['response'][0]['id']
-    owner_id = saved_picture_data['response'][0]['owner_id']
+def post_picture_on_the_wall(saved_picture_data_raw, params=None, proxies=None):
+    saved_picture_data = saved_picture_data_raw['response'][0]
+    photo_id = saved_picture_data['id']
+    owner_id = saved_picture_data['owner_id']
     post_params = params.copy()
     post_params['owner_id'] = f"-{post_params['group_id']}"
     post_params['from_group'] = 1
@@ -82,14 +82,15 @@ if __name__ == '__main__':
     }
     comics_id = get_random_comics()
     comics = fetch_comics(comics_id)
-    file_name = save_picture(comics)
-    upload_url = get_upload_url(params, proxies)
-    posted_picture_data = post_picture(upload_url, file_name, params, proxies)
-    saved_picture_data = save_picture_for_the_wall(posted_picture_data, params, proxies)
-    post_picture_on_the_wall(saved_picture_data, params, proxies)
-    os.remove(file_name)
-    print('Комикс успешно размещен')
-
-
+    file_name = sanitize_filename(f"{comics['image_title']}{os.path.splitext(comics['image_link'])[1]}")
+    try:
+        save_picture(comics, file_name)
+        upload_url = get_upload_url(params, proxies)
+        posted_picture_data = post_picture(upload_url, file_name, params, proxies)
+        saved_picture_data = save_picture_for_the_wall(posted_picture_data, params, proxies)
+        post_picture_on_the_wall(saved_picture_data, params, proxies)
+        print('Комикс успешно размещен')
+    finally:
+        os.remove(file_name)
 
 
